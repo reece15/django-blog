@@ -1,0 +1,15 @@
+<div>
+	<ul class="nav">
+		<li class="logo"><a href="/">Index</a></li>
+		<li><a href="/addArticleView/">Post</a></li>
+		<li><a href="/loginView/">Login</a></li>
+		<li><a href="/regView/">Reg</a></li>
+		<li class="logout">
+			{% if request.session.user %}
+				<a href="/logout/">{{request.session.user.name}}</a>
+			{% else %}
+				<a href="/loginView/">login</a>
+			{% endif %}
+		</li>
+	</ul>
+</div>

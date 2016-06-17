@@ -1,0 +1,52 @@
+{% extends  'base.html' %}
+
+{% block title %}
+reg
+{% endblock %}
+
+{% block article %}
+	<div class="reg-box box">
+		<table border="1px" align="center">
+			<caption>reg</caption>
+			<tr>
+				<td>username:</td>
+				<td><input id="name" type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>password:</td>
+				<td><input id="password" type="password" name="password"></td>
+			</tr>
+			<tr>
+				<td>email:</td>
+				<td><input id="email" type="text" name="email"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input id="regbtn" type="button" value='reg'></td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$.ajaxSetup({
+    				data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+			$("#regbtn").bind("click", function(){
+				$.post({
+					url:'/reg/',
+					data:{
+						'name': $('#name').val(), 
+						'password':$("#password").val(),
+						'email':$('#email').val()
+					},
+					success:function(data){
+						if($.parseJSON(data)['msg'] == 'save'){
+							window.location.href= "/";
+						}else{
+							alert("error");
+						}
+					}
+				});
+			});
+		});
+	</script>
+{% endblock %}

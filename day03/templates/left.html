@@ -1,0 +1,40 @@
+<div class="left">	
+	<div class="search"></div>
+	<div class="head-box">
+		<div class="head-pic pic">
+			
+			<script type="text/javascript">
+				$(function(){
+					$(".send-pic").mouseleave(function(){
+						if ($(".send-pic").val() != ""){
+							$(".head-pic form").submit();
+						}
+					});
+				});
+			</script>
+			<form action="/uploadPic/" method="post" enctype="multipart/form-data">{% csrf_token %}
+				<input type="file" name="photo" class="send-pic">
+				<input type="submit"  class="send-photo">
+			</form>
+			<img  class="pic" src="{{request.session.user.pic}}" width="100%" height="100%" >
+			
+		</div> 
+		<div class="name-box">
+			<a href="/">{{request.session.user.name}}</a>
+		</div>
+
+		<div class="tags-cloud">
+
+		<span>
+		All Tags
+
+		</span>
+		
+			{% for tag in tags %}
+				<div class="tag-one"><a href="#">{{tag}}</a></div>
+			{% endfor %}
+		</div>
+	</div>
+
+	
+</div>

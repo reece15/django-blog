@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Test{%  endblock %}</title>
+	{% include 'comment.html' %}
+</head>
+<body>
+	{% include 'left.html' %}
+	<div class="right">
+		<div class="wrapright">
+		</div>
+		<div class="realright">
+			{% include 'header.html' %}
+			<div class="content">
+				{% block article %}
+
+				{% endblock %}
+			</div>
+			{% include 'footer.html' %}
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Blog
+{% endblock %}
+
+{% block article %}
+	{% for item in articles %}
+		<div  class="article">
+			<div class="article-title">
+				<span>{{item.title}}</span>
+				{% if request.session.user %}
+					<span class="delspan"><a href="/delete/{{item.id}}/article">Del</a></span>
+			{% endif %}
+			</div>
+
+			<div class="article-content">
+				<span>{{item.content | slice:'120'}}...</span>
+			</div>
+			<div class="article-info">
+				<span>date:{{item.time}}</span>
+				<span>tags:{{item.tags}}</span>
+				<span>cnt:{{item.readCnt}}</span>
+				<span><a href="/showArticle/{{item.id}}">read more</a></span>
+			</div>
+		</div>
+	{% endfor %}
+	<div class="selecter">
+		<div><a class="pre" href="{{pre}}" >pre</a></div>
+		<div><span>{{pageNum}}</span></div>
+		<div><a class="next" href="{{next}}">next</a></div>
+	</div>
+{% endblock %}

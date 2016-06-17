@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.title}}{% endblock %}
+
+{% block article %}
+	<div class="content-box">
+		<div class="content-title">
+			<span>{{article.title}}</span>
+		</div>
+
+		<div class='content-con'>
+			{{article.content}}
+		</div>
+		<div class="content-info">
+			<span>date:{{article.time}}</span>
+			<span>tags:{{article.tags}}</span>
+			<span>cnt:{{article.readCnt}}</span>
+		</div>
+	</div>
+	<div class="comment-box">
+		<div class="comment" id="comment-div">
+			<textarea id="comment-text"></textarea>
+			<input type="hidden" id='articleId' value='{{article.id}}'>
+			<input type="button" value="send" id="combtn" class="comment-input">
+		</div>
+		{% for c in comments %}
+			<div class="comment  comment-say">
+				
+				<div class="comment-content">{{ c.content }}</div>
+				<div class="comment-time">{{ c.time }}
+					{% if request.session.user.name %}
+						<span ><a href="/delete/{{c.id}}/comment">	Del</a></span>
+					{% endif %}
+				</div>
+			</div> 
+		{%  endfor %}
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			var monthname =   
+new Array ("January","February","March","April","May","June","July","August","September","October","November","December" );
+			$.ajaxSetup({
+    				data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+			$("#combtn").bind("click", function(){
+				$.post({
+					url:'/addComment/',
+					data:{
+						'id': $('#articleId').val(), 
+						'content':$("#comment-text").val()
+					},
+					success:function(data){
+						if($.parseJSON(data)['msg'] == 'save'){
+							var date = new Date();
+							$("#comment-div").after("<div class='comment comment-say'><div class='comment-content'>"+$("#comment-text").val()+"</div><div class='comment-time'>"+monthname[date.getMonth()]+" "+date.getDate()+","+date.getFullYear()+"</div></div>");
+						}else{
+							alert("failed");
+						}
+					}
+				});
+			});
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends  'base.html' %}
+
+{% block title %}
+add article
+{% endblock %}
+
+{% block article %}
+<div class="add-article">
+	<div class="title">
+		Title: <br><input id= "title-input" type="text" name="title" class="title-input">
+	</div>
+	<div class="content">
+		Content:<br><textarea id="content-text" class="content-text"></textarea>
+	</div>
+	<div class="tags">
+		Tags:<br>
+		<select id="tagsselecter">
+			{% for tag in tags %}
+				<option value="{{tag.name}}">{{tag.name}}</option>
+			{% endfor %}
+		</select>
+		<input type="button" name="title" id="sendbtn" class="send-input" value="send">
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$.ajaxSetup({
+    				data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+			});
+			$("#sendbtn").bind("click", function(){
+				$.post({
+					url:'/addArticle/',
+					data:{
+						'title': $('#title-input').val(), 
+						'content':$("#content-text").val(),
+						'tag':$('#tagsselecter').val()
+					},
+					success:function(data){
+						if($.parseJSON(data)['msg'] == 'save'){
+							window.location.href= "/";
+						}else{
+							alert("error");
+						}
+					}
+				});
+			});
+		});
+	</script>
+</div>
+{% endblock %}
